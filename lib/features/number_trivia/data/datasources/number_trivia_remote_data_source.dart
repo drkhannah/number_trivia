@@ -25,13 +25,13 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
 
   @override
   Future<NumberTriviaModel> getConcreteNumberTrivia(int number) =>
-      getTriviaFromUrl(BASE_URL + '$number');
+      _getTriviaFromUrl(BASE_URL + '$number');
 
   @override
   Future<NumberTriviaModel> getRandomNumberTrivia() =>
-      getTriviaFromUrl(BASE_URL + 'random');
+      _getTriviaFromUrl(BASE_URL + 'random');
 
-  Future<NumberTriviaModel> getTriviaFromUrl(String url) async {
+  Future<NumberTriviaModel> _getTriviaFromUrl(String url) async {
     final response = await client.get(
       url,
       headers: {
