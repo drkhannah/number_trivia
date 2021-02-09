@@ -1,3 +1,4 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:number_trivia/core/network/network_info.dart';
@@ -17,7 +18,7 @@ final sl = GetIt.instance;
 void init() {
   // Features - Number Trivia
   sl.registerFactory(
-    () => NumberTriviaBloc(
+        () => NumberTriviaBloc(
       concrete: sl(),
       random: sl(),
       inputConverter: sl(),
@@ -29,7 +30,7 @@ void init() {
 
   // repository
   sl.registerLazySingleton<NumberTriviaRepository>(
-    () => NumberTriviaRepositoryImpl(
+        () => NumberTriviaRepositoryImpl(
       remoteDataSource: sl(),
       localDataSource: sl(),
       networkInfo: sl(),
@@ -38,13 +39,13 @@ void init() {
 
   // Data
   sl.registerLazySingleton<NumberTriviaRemoteDataSource>(
-    () => NumberTriviaRemoteDataSourceImpl(
+        () => NumberTriviaRemoteDataSourceImpl(
       client: sl(),
     ),
   );
 
   sl.registerLazySingleton<NumberTriviaLocalDataSource>(
-    () => NumberTriviaLocalDataSourceImpl(
+        () => NumberTriviaLocalDataSourceImpl(
       sharedPreferences: sl(),
     ),
   );
@@ -56,4 +57,5 @@ void init() {
   // External
   sl.registerLazySingleton(() async => await SharedPreferences.getInstance());
   sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => DataConnectionChecker());
 }
