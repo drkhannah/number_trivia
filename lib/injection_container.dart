@@ -15,10 +15,10 @@ import 'features/number_trivia/domain/usecases/get_random_number_trivia.dart';
 
 final sl = GetIt.instance;
 
-void init() {
+Future<void> init() async {
   // Features - Number Trivia
   sl.registerFactory(
-        () => NumberTriviaBloc(
+    () => NumberTriviaBloc(
       concrete: sl(),
       random: sl(),
       inputConverter: sl(),
@@ -30,7 +30,7 @@ void init() {
 
   // repository
   sl.registerLazySingleton<NumberTriviaRepository>(
-        () => NumberTriviaRepositoryImpl(
+    () => NumberTriviaRepositoryImpl(
       remoteDataSource: sl(),
       localDataSource: sl(),
       networkInfo: sl(),
@@ -39,13 +39,10 @@ void init() {
 
   // Data
   sl.registerLazySingleton<NumberTriviaRemoteDataSource>(
-        () => NumberTriviaRemoteDataSourceImpl(
-      client: sl(),
-    ),
-  );
+      () => NumberTriviaRemoteDataSourceImpl(client: sl()));
 
   sl.registerLazySingleton<NumberTriviaLocalDataSource>(
-        () => NumberTriviaLocalDataSourceImpl(
+    () => NumberTriviaLocalDataSourceImpl(
       sharedPreferences: sl(),
     ),
   );
@@ -55,7 +52,8 @@ void init() {
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
   // External
-  sl.registerLazySingleton(() async => await SharedPreferences.getInstance());
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferences);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => DataConnectionChecker());
 }
